@@ -144,4 +144,56 @@ results = "hide"
 
 ```
 
+
+## Part 5- Splitting up the data so that it's sorted by weekday or weekend
+##0 is for Sunday, 1 is for Monday, going up to 6 for Saturday
+
+```{r}
+wdays <- dates$wday
+classifywday <- rep(0, 17568) # 17568 observations overall
+classifywday[wdays >= 1 & wdays <= 5] <- 1
+classifywday[wdays == 6 | wdays == 0] <- 2
+
+```
+#Create a new factor variable that has labels Weekdays and Weekends
+```{r}
+daysFactor <- factor(classifywday, levels=c(1,2), labels=c("Weekdays", "Weekends"))
+```
+#Create a new column that contains this factor for each day
+
+```{r}
+datNew$typeOfDay <- daysFactor
+```
+
+#Splitting up into two data frames
+
+```{r}
+Weekdays <- datNew[datNew$typeOfDay == "Weekdays", ]
+Weekends <- datNew[datNew$typeOfDay == "Weekends", ]
+
+
+SplitWeekdays <- split(Weekdays$steps, Weekdays$interval)
+SplitWeekends <- split(Weekends$steps, Weekends$interval)
+
+```
+#Finding the average for each interval
+
+```{r}
+StepsPerWeekdaymeanInterval <- sapply(SplitWeekdays, mean)
+StepsPerWeekendmeanInterval <- sapply(SplitWeekends, mean)
+
+par(mfcol=c(2,1))
+plot(Intervals, StepsPerWeekdaymeanInterval, type="l",
+     main="Average number of steps per interval across all weekdays", 
+     xlab="Interval", ylab="Average # of steps across all weekdays", 
+     lwd=2, col="green")
+
+plot(Intervals, StepsPerWeekendmeanInterval, type="l",
+     main="Average number of steps per interval across all weekends", 
+     xlab="Interval", ylab="Average # of steps across all weekends", 
+     lwd=2, col="green")
+```
+
+
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
