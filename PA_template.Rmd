@@ -5,23 +5,142 @@ date: "July 21, 2018"
 output: html_document
 ---
 
+#Reproducible Research: Peer Assessment 1
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+##Reading data 
 
-#Reproducible Research: Peer Assessment 1
+```{r simulation, echo=FALSE}
 
+activity <- read.csv("activity.csv")
+dates <- strptime(activity$date, "%Y-%m-%d")
+activity$date <- dates
+Dates <- unique(dates)
+Intervals <- unique(activity$interval)
+results = "hide"
+```
+##Part1
+##Histogram of total steps taken in a day
+```{r}
+steps <- split(activity$steps, dates$yday)
+totalStepsPerDay <- sapply(steps, sum, na.rm=TRUE)
+plot(Dates, totalStepsPerDay, main="Histogram of steps taken each day", 
+     xlab="Date (October to November 2012)", ylab="Frequency", type="h", lwd=4, col="red")
 
-```{r cars}
-summary(cars)
+```
+##Part2
+##The mean steps per day 
+## Including Plots
+```{r}
+StepsPerDaymean <- sapply(steps, mean, na.rm=TRUE)
+mean <- data.frame(date=Dates, StepsPerDaymean=StepsPerDaymean, row.names=NULL)
+mean
+results = "hide"
 ```
 
-## Including Plots
+##The median steps per day 
 
-You can also embed plots, for example:
+```{r}
+StepsPerDaymedian <- sapply(steps, median, na.rm=TRUE)
+median <- data.frame(date=Dates, StepsPerDaymedian=StepsPerDaymedian, row.names=NULL)
+median
+results = "hide"
+```
+## Part3
+## Split up the data according to the interval
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+
+interval <- split(activity$steps, activity$interval)
+
+StepsPerIntervalaverage <- sapply(interval, mean, na.rm=TRUE)
+```
+## Plot the time-series graph
+
+```{r}
+plot(Intervals, StepsPerIntervalaverage, type="l",
+     main="Average number of steps per interval across all days", 
+     xlab="Interval", ylab="Average # of steps across all days", 
+     lwd=2, col="yellow")
+```
+##The location of where the maximum is
+
+```{r}
+maxIntervalDays <- max(StepsPerIntervalaverage, na.rm=TRUE)
+maxIndex <- as.numeric(which(StepsPerIntervalaverage == maxIntervalDays))
+maxIndex
+results = "hide"
+```
+# Plotting a vertical line where the max is
+
+```{r}
+maxInterval <- Intervals[maxIndex]
+abline(v=maxInterval, col="red", lwd=3)
+
+maxInterval
+results = "hide"
+```
+##Part4 
+##Calculating total amount of missing values in the data set
+
+```{r}
+completeRows <- complete.cases(activity$steps)
+numNA <- sum(as.numeric(!completeRows))
+numNA
+
+StepsPerDaymean[is.nan(StepsPerDaymean)] <- 0
+meanColumn <- rep(StepsPerDaymean, 288)
+rawSteps <- activity$steps
+stepsNA <- is.na(rawSteps)
+rawSteps[stepsNA] <- meanColumn[stepsNA]
+datNew <- activity
+datNew$steps <- rawSteps
+
+stepsNew <- split(datNew$steps, dates$yday)
+```
+##finding the total number of steps over each day
+
+```{r}
+totalStepsPerDayNew <- sapply(stepsNew, sum)
+```
+# Plotting histogram 
+
+```{r}
+par(mfcol=c(2,1))
+```
+# Plot the original histogram first
+
+```{r}
+plot(Dates, totalStepsPerDay, main="Histogram of steps taken each day before imputing", 
+     xlab="Date (October to November 2012)", ylab="Frequency", type="h", lwd=4, col="pink")
+```
+# Plot the modified histogram after
+
+```{r}
+plot(Dates, totalStepsPerDayNew, main="Histogram of steps taken each day after imputing", 
+     xlab="Date (October to November 2012)", ylab="Frequency", type="h", lwd=4, col="pink")
+```
+##New mean
+
+```{r}
+StepsPerDaymeanNew <- sapply(stepsNew, mean)
+DataFramemeanNew <- data.frame(date=Dates, StepsPerDaymean=StepsPerDaymean, 
+                               StepsPerDaymeanNew=StepsPerDaymeanNew, row.names=NULL)
+DataFramemeanNew
+results = "hide"
+
+```
+##New median
+
+```{r}
+StepsPerDaymedianNew <- sapply(stepsNew, median)
+DataFramemedianNew <- data.frame(date=Dates, StepsPerDaymedian=StepsPerDaymedian, 
+                                 StepsPerDaymedianNew=StepsPerDaymedianNew, row.names=NULL)
+DataFramemedianNew
+results = "hide"
+
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
