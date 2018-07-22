@@ -137,7 +137,7 @@ DataFramemedianNew
 ```
 
 
-## Part 5- Splitting up the data so that it's sorted by weekday or weekend
+## Part5- Splitting up the data so that it's sorted by weekday or weekend
 ##0 is for Sunday, 1 is for Monday, going up to 6 for Saturday
 
 ```{r}
