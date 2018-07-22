@@ -20,7 +20,6 @@ dates <- strptime(activity$date, "%Y-%m-%d")
 activity$date <- dates
 Dates <- unique(dates)
 Intervals <- unique(activity$interval)
-results = "hide"
 ```
 ## Part1- Histogram of total steps taken in a day
 
@@ -39,7 +38,6 @@ plot(Dates, totalStepsPerDay, main="Histogram of steps taken each day",
 StepsPerDaymean <- sapply(steps, mean, na.rm=TRUE)
 mean <- data.frame(date=Dates, StepsPerDaymean=StepsPerDaymean, row.names=NULL)
 mean
-results = "hide"
 ```
 
 ##The median steps per day 
@@ -48,7 +46,6 @@ results = "hide"
 StepsPerDaymedian <- sapply(steps, median, na.rm=TRUE)
 median <- data.frame(date=Dates, StepsPerDaymedian=StepsPerDaymedian, row.names=NULL)
 median
-results = "hide"
 ```
 ## Part3- Split up the data according to the interval
 
@@ -72,7 +69,6 @@ plot(Intervals, StepsPerIntervalaverage, type="l",
 maxIntervalDays <- max(StepsPerIntervalaverage, na.rm=TRUE)
 maxIndex <- as.numeric(which(StepsPerIntervalaverage == maxIntervalDays))
 maxIndex
-results = "hide"
 ```
 #Plotting a vertical line where the max is
 
@@ -81,7 +77,6 @@ maxInterval <- Intervals[maxIndex]
 abline(v=maxInterval, col="red", lwd=3)
 
 maxInterval
-results = "hide"
 ```
 ## Part4- Calculating total amount of missing values in the data set
 
@@ -130,7 +125,6 @@ StepsPerDaymeanNew <- sapply(stepsNew, mean)
 DataFramemeanNew <- data.frame(date=Dates, StepsPerDaymean=StepsPerDaymean, 
                                StepsPerDaymeanNew=StepsPerDaymeanNew, row.names=NULL)
 DataFramemeanNew
-results = "hide"
 
 ```
 ##New median
@@ -140,8 +134,6 @@ StepsPerDaymedianNew <- sapply(stepsNew, median)
 DataFramemedianNew <- data.frame(date=Dates, StepsPerDaymedian=StepsPerDaymedian, 
                                  StepsPerDaymedianNew=StepsPerDaymedianNew, row.names=NULL)
 DataFramemedianNew
-results = "hide"
-
 ```
 
 
