@@ -5,12 +5,13 @@ date: "July 21, 2018"
 output: html_document
 ---
 
-Reproducible Research: Peer Assessment 1
+## Reproducible Research project 1
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-Reading data 
+## Reading Data
 
 ```{r simulation, echo=FALSE}
 
@@ -21,8 +22,9 @@ Dates <- unique(dates)
 Intervals <- unique(activity$interval)
 results = "hide"
 ```
-##Part1
-##Histogram of total steps taken in a day
+## Part1- Histogram of total steps taken in a day
+
+##Histogram
 ```{r}
 steps <- split(activity$steps, dates$yday)
 totalStepsPerDay <- sapply(steps, sum, na.rm=TRUE)
@@ -30,7 +32,8 @@ plot(Dates, totalStepsPerDay, main="Histogram of steps taken each day",
      xlab="Date (October to November 2012)", ylab="Frequency", type="h", lwd=4, col="red")
 
 ```
-##Part2
+## Part2- Mean and Median of steps per day
+
 ##The mean steps per day 
 ```{r}
 StepsPerDaymean <- sapply(steps, mean, na.rm=TRUE)
@@ -47,8 +50,7 @@ median <- data.frame(date=Dates, StepsPerDaymedian=StepsPerDaymedian, row.names=
 median
 results = "hide"
 ```
-## Part3
-## Split up the data according to the interval
+## Part3- Split up the data according to the interval
 
 ```{r}
 
@@ -56,7 +58,7 @@ interval <- split(activity$steps, activity$interval)
 
 StepsPerIntervalaverage <- sapply(interval, mean, na.rm=TRUE)
 ```
-## Plot the time-series graph
+##Plotting the time-series graph
 
 ```{r}
 plot(Intervals, StepsPerIntervalaverage, type="l",
@@ -72,7 +74,7 @@ maxIndex <- as.numeric(which(StepsPerIntervalaverage == maxIntervalDays))
 maxIndex
 results = "hide"
 ```
-# Plotting a vertical line where the max is
+#Plotting a vertical line where the max is
 
 ```{r}
 maxInterval <- Intervals[maxIndex]
@@ -81,8 +83,8 @@ abline(v=maxInterval, col="red", lwd=3)
 maxInterval
 results = "hide"
 ```
-##Part4 
-##Calculating total amount of missing values in the data set
+## Part4- Calculating total amount of missing values in the data set
+
 
 ```{r}
 completeRows <- complete.cases(activity$steps)
@@ -99,23 +101,23 @@ datNew$steps <- rawSteps
 
 stepsNew <- split(datNew$steps, dates$yday)
 ```
-##finding the total number of steps over each day
+##Finding the total number of steps over each day
 
 ```{r}
 totalStepsPerDayNew <- sapply(stepsNew, sum)
 ```
-# Plotting histogram 
+#Plotting histogram 
 
 ```{r}
 par(mfcol=c(2,1))
 ```
-# Plot the original histogram first
+#Plot the original histogram first
 
 ```{r}
 plot(Dates, totalStepsPerDay, main="Histogram of steps taken each day before imputing", 
      xlab="Date (October to November 2012)", ylab="Frequency", type="h", lwd=4, col="pink")
 ```
-# Plot the modified histogram after
+#Plot the modified histogram after
 
 ```{r}
 plot(Dates, totalStepsPerDayNew, main="Histogram of steps taken each day after imputing", 
