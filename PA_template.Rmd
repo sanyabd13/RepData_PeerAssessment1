@@ -32,7 +32,6 @@ plot(Dates, totalStepsPerDay, main="Histogram of steps taken each day",
 ```
 ##Part2
 ##The mean steps per day 
-## Including Plots
 ```{r}
 StepsPerDaymean <- sapply(steps, mean, na.rm=TRUE)
 mean <- data.frame(date=Dates, StepsPerDaymean=StepsPerDaymean, row.names=NULL)
